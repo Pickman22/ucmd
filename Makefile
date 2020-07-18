@@ -1,10 +1,11 @@
 PROJ_NAME=ucmd
 BUILD_DIR=build
+TEST_DIR=tests
 
 SRCS=main.c
 SRCS+=err.c
-SRCS+=test_cmd.c
-SRCS+=test_utils.c
+SRCS+=$(TEST_DIR)/test_cmd.c
+SRCS+=$(TEST_DIR)/test_utils.c
 SRCS+=utils.c
 SRCS+=ucmd.c
 
@@ -34,4 +35,6 @@ $(PROJ_NAME): $(PROJ_NAME).out
 $(PROJ_NAME).out: $(SRCS)
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(INCLUDE) $(DEFS) $(CFLAGS) $^ -o $(BUILD_DIR)/$@
-clean: rm -f *.o $(BUILD_DIR)/$(PROJ_NAME).out $(BUILD_DIR)/$(PROJ_NAME).hex $(BUILD_DIR)/$(PROJ_NAME).bin $(BUILD_DIR)/$(PROJ_NAME).map $(BUILD_DIR)/$(PROJ_NAME).dump
+
+clean:
+	rm -f *.o $(BUILD_DIR)/$(PROJ_NAME).*

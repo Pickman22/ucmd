@@ -1,6 +1,6 @@
 #include "err.h"
 
-const char _err_str_a[][32] = {
+static const char _err_str_a[][32] = {
    "OK",
    "NULL Pointer",
    "Invalid Argument",

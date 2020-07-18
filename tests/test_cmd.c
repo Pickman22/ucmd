@@ -2,10 +2,12 @@
 #include <assert.h>
 #include <string.h>
 #include "utils.h"
-#include "cmd.h"
+#include "ucmd.h"
 
 ErrCode_e cmd_1(Arg_s* args, void* usrargs) {
-   return E_OK;
+  (void)args;
+  (void)usrargs;
+  return E_OK;
 }
 
 extern ErrCode_e _get_cmdinfo(const char* cmdstr, const CmdTable_s * cmd_table, const CmdInfo_s** info);
@@ -20,9 +22,7 @@ void test__get_param(void) {
    /*************************************************************************/
    /* TEST SETUP ************************************************************/
    /*************************************************************************/
-   const uint8_t StrArrSz = 10;
    char str[] = "pwmfreq f2.33 m1";
-   char actualname[] = "pwmfreq";
    char str_a[][10] = { "pwmfreq", "f2.33", "m1" };
    char name[CMD_NAME_MAX_SIZE];
    char* ofs = str;
@@ -58,10 +58,11 @@ void test__get_param(void) {
 }
 
 ErrCode_e dummy_handle(Arg_s* args, void* usrargs) {
-   int8_t r = CMD_ARG(args, 0, int8_t);
-   int16_t q = CMD_ARG(args, 1, int16_t);
-   int32_t f = CMD_ARG(args, 2, int32_t);
-
+   (void)usrargs;
+   (void)args;
+   /* int8_t r = CMD_ARG(args, 0, int8_t); */
+   /* int16_t q = CMD_ARG(args, 1, int16_t); */
+   /* int32_t f = CMD_ARG(args, 2, int32_t); */
    return E_OK;
 }
 
@@ -71,21 +72,6 @@ void test__get_cmdinfo(void) {
    /*************************************************************************/
 
    uint8_t i;
-
-   const CmdInfo_s info = {
-      /* Command Name. */
-      "pwmfreq",
-
-      /* Command Handle. */
-      dummy_handle,
-
-      /* Argument Description. */
-      {
-         {E_ARG_U8, 'r'},
-         {E_ARG_I16, 'q'},
-         {E_ARG_I32, 'f'},
-      },
-   };
 
    const CmdInfo_s info_a[] = {
 
@@ -103,6 +89,9 @@ void test__get_cmdinfo(void) {
             {E_ARG_I16, 'q'},
             {E_ARG_I32, 'f'},
          },
+
+         /* User argument. */
+         NULL,
       },
       /*********************************************************************/
       {
@@ -118,6 +107,9 @@ void test__get_cmdinfo(void) {
             {E_ARG_I32, 'i'},
             {E_ARG_I32, 'd'},
          },
+
+         /* User argument. */
+         NULL,
       },
       /*********************************************************************/
       {
@@ -133,6 +125,9 @@ void test__get_cmdinfo(void) {
             {E_ARG_I16, 'y'},
             {E_ARG_I32, 'z'},
          },
+
+         /* User argument. */
+         NULL,
       },
    };
 
@@ -199,6 +194,8 @@ void test__parse_string(void) {
             {E_ARG_I16, 'q'},
             {E_ARG_I32, 'f'},
          },
+         /* User argument. */
+         NULL,
       },
       /*********************************************************************/
       {
@@ -214,6 +211,8 @@ void test__parse_string(void) {
             {E_ARG_I32, 'i'},
             {E_ARG_I32, 'd'},
          },
+         /* User argument. */
+         NULL,
       },
       /*********************************************************************/
       {
@@ -229,15 +228,16 @@ void test__parse_string(void) {
             {E_ARG_I16, 'y'},
             {E_ARG_I32, 'z'},
          },
+         /* User argument. */
+         NULL,
       },
    };
 
    ErrCode_e ret;
-   const char cmdname_a[][CMD_NAME_MAX_SIZE] = { "pwmfreq", "pid", "ctrlmode" };
    char rawstr[CMD_RAW_STR_MAX_SIZE] = "pwmfreq f233 r10 q-40";
 
    CmdTable_s table_sa;
-   CmdHandle_s handle = { NULL, {0}, NULL };
+   CmdHandle_s handle = { NULL, {{0}}, NULL };
    table_sa.info_a = &info_a[0];
    table_sa.size = 0;
    ret = E_NULL_PTR;
@@ -357,12 +357,13 @@ ErrCode_e pwmfreq_handle(Arg_s* args, void* usrargs) {
 }
 
 ErrCode_e pid_handle(Arg_s* args, void* usrargs) {
-
-
+   (void)args;
+   (void)usrargs;
    return E_GENERIC;
 }
 
 ErrCode_e ctrlmode_handle(Arg_s* args, void* usrargs) {
+   (void)usrargs;
    Arg_s _args[CMD_ARG_MAX_SIZE];
    memset(_args, 0, sizeof(Arg_s) * (CMD_ARG_MAX_SIZE));
    assert(!memcmp(_args, args, sizeof(Arg_s) * (CMD_ARG_MAX_SIZE)));
@@ -431,7 +432,6 @@ void test_cmd(void) {
    };
 
    ErrCode_e ret;
-   const char cmdname_a[][CMD_NAME_MAX_SIZE] = { "pwmfreq", "pid", "ctrlmode" };
    char rawstr[CMD_RAW_STR_MAX_SIZE] = "pwmfreq r10 f233 q-40";
    char rawstr1[CMD_RAW_STR_MAX_SIZE] = "ctrlmode";
    /*************************************************************************/
