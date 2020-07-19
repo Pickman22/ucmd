@@ -1,16 +1,26 @@
 PROJ_NAME=ucmd
 BUILD_DIR=build
+UNITY_DIR=Unity
 TEST_DIR=.
+SRCS=
 
-SRCS=main.c
+# Modules code.
 SRCS+=../err.c
-SRCS+=$(TEST_DIR)/test_cmd.c
-SRCS+=$(TEST_DIR)/test_utils.c
 SRCS+=../utils.c
 SRCS+=../ucmd.c
+SRCS+=../line.c
+
+# Legacy tests.
+SRCS+=$(TEST_DIR)/test_cmd.c
+SRCS+=$(TEST_DIR)/test_utils.c
+SRCS+=$(TEST_DIR)/main.c
+
+# Unity testing framework.
+SRCS+=$(UNITY_DIR)/unity.c
 
 INC_DIRS=.
-INC_DIRS+=../
+INC_DIRS+=..
+INC_DIRS+=Unity
 
 CC=gcc
 OBJCOPY=objcopy
