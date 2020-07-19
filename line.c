@@ -1,3 +1,12 @@
+#include "line.h"
+#include <stdbool.h>
+#include <string.h>
+
+#ifdef UNIT_TEST
+#define STATIC
+#else
+#define STATIC static
+#endif
 
 typedef struct _Line_S {
   uint8_t buff[LINE_BUFF_SIZE]; /* Buffer memory. */
