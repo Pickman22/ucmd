@@ -15,9 +15,9 @@ typedef enum ErrCode {
   E_NOT_FOUND,
   E_INTERNAL,
   E_GENERIC,
-   E_NOT_INITIALIZED,
+  E_NOT_INITIALIZED,
   E_LAST_ELEM,
-}  ErrCode_e;
+} ErrCode_e;
 
 void print_err(char* msg, ErrCode_e err);
 
