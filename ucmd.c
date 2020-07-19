@@ -21,7 +21,7 @@
 #define LAST_ARR_ELEM 0x00
 
 const char WrdBrkCh_c = CHAR_SPACE;
-STATIC CmdTable_s _cmdtable_p_s = {0};
+STATIC uCmdTable_s _cmdtable_p_s = {0};
 
 /*****************************************************************************/
 /* Handle raw string conversion to actual numeric values. ********************/
@@ -121,7 +121,7 @@ static _strtonum_s _strtonum_h = {
 
 /*****************************************************************************/
 
-/*STATIC*/ ErrCode_e _get_param(const char* rawstr, char* param, uint8_t* done) {
+STATIC ErrCode_e _get_param(const char* rawstr, char* param, uint8_t* done) {
   int16_t i= 0;
   ErrCode_e ret = E_GENERIC;
   if(rawstr && param && done) {
@@ -146,14 +146,14 @@ static _strtonum_s _strtonum_h = {
   return ret;
 }
 
-/*STATIC*/ ErrCode_e _get_arg(const char* rawstr, const ArgDesc_s* argdesc_a, Arg_s* arg) {
+STATIC ErrCode_e _get_arg(const char* rawstr, const ArgDesc_s* argdesc_a, Arg_s* arg) {
   ErrCode_e ret = E_GENERIC;
   const char* ofs = rawstr + 1;
   char argname = rawstr[0];
   size_t i;
   if(rawstr && argdesc_a && arg) {
     ret = E_NOT_FOUND;
-    for(i = 0; (i < (CMD_ARG_MAX_SIZE)) && (ret == E_NOT_FOUND); i++) {
+    for(i = 0; (i < (UCMD_ARG_MAX_SIZE)) && (ret == E_NOT_FOUND); i++) {
       if((argname == argdesc_a[i].argname) && (argdesc_a[i].argtype < (uint8_t)_strtonum_h.size)) {
         arg[i].desc = &argdesc_a[i];
         _strtonum_h._strtonum_fp[argdesc_a[i].argtype](ofs, &(arg[i].data));
@@ -167,14 +167,14 @@ static _strtonum_s _strtonum_h = {
   return ret;
 }
 
-/*STATIC*/ ErrCode_e _get_cmdinfo(const char* cmdstr, const CmdTable_s * cmd_table, const CmdInfo_s** info) {
+STATIC ErrCode_e _get_cmdinfo(const char* cmdstr, const uCmdTable_s * cmd_table, const uCmdInfo_s** info) {
   ErrCode_e ret = E_GENERIC;
   uint8_t i;
-   size_t table_sz;
-   const CmdInfo_s* table_sa;
+  size_t table_sz;
+  const uCmdInfo_s* table_sa;
   if(cmdstr && cmd_table && cmd_table->size && cmd_table->info_a && info) {
-      table_sa = cmd_table->info_a;
-      table_sz = cmd_table->size;
+    table_sa = cmd_table->info_a;
+    table_sz = cmd_table->size;
     *info = NULL;
     ret = E_OK;
     for(i = 0; i < table_sz; i++) {
@@ -189,18 +189,18 @@ static _strtonum_s _strtonum_h = {
   return ret;
 }
 
-/*STATIC*/ ErrCode_e _parse_string(const char* rawstr, const CmdTable_s* table_sa, CmdHandle_s* handle) {
+STATIC ErrCode_e _parse_string(const char* rawstr, const uCmdTable_s* table_sa, uCmdHandle_s* handle) {
   ErrCode_e ret = E_GENERIC;
-  char buf[CMD_RAW_STR_MAX_SIZE] = {0};
-   char cmdname[CMD_NAME_MAX_SIZE] = {0};
+  char buf[UCMD_RAW_STR_MAX_SIZE] = {0};
+  char cmdname[UCMD_NAME_MAX_SIZE] = {0};
   uint8_t done = 0;
   const char* ofs = rawstr;
   uint8_t argidx = 0;
-  const CmdInfo_s* p_info_s;
+  const uCmdInfo_s* p_info_s;
   uint8_t i;
 
   if(rawstr && table_sa && table_sa->size && handle) {
-    memset(handle->args, 0, sizeof(Arg_s) * (CMD_ARG_MAX_SIZE));
+    memset(handle->args, 0, sizeof(Arg_s) * (UCMD_ARG_MAX_SIZE));
 
     /* Get the command name from the raw string. */
     (void)_get_param(ofs, cmdname, &done);
@@ -213,7 +213,7 @@ static _strtonum_s _strtonum_h = {
     }
 
     if(ret == E_OK) {
-      /* The flag done will already be se	t if there are no arguments
+      /* The flag done will already be set if there are no arguments
          to pass to the command and the following logic needs not to
          be exectued. */
       while((!done) &&
@@ -226,7 +226,7 @@ static _strtonum_s _strtonum_h = {
         /* Increase pointer to start of next argument if any. */
         ofs += strlen(buf) + 1;
         argidx++;
-      }	
+      }
     }
 
     if(ret == E_OK) {
@@ -240,14 +240,13 @@ static _strtonum_s _strtonum_h = {
         }
       }
     }
-    
   } else {
     ret = (rawstr && table_sa) ? E_INV_SIZE : E_NULL_PTR;
   }
   return ret;
 }
 
-ErrCode_e Cmd_InitTable(const CmdInfo_s* cmdtable, size_t table_sz) {
+ErrCode_e uCmd_InitTable(const uCmdInfo_s* cmdtable, size_t table_sz) {
    ErrCode_e ret = E_INV_ARG;
    _cmdtable_p_s.info_a = NULL;
    _cmdtable_p_s.size = 0;
@@ -262,8 +261,8 @@ ErrCode_e Cmd_InitTable(const CmdInfo_s* cmdtable, size_t table_sz) {
    return ret;
 }
 
-ErrCode_e Cmd_Run(const char* cmdstr) {
-   CmdHandle_s handle;
+ErrCode_e uCmd_Run(const char* cmdstr) {
+   uCmdHandle_s handle;
    ErrCode_e ret = E_GENERIC;
    if (_cmdtable_p_s.info_a && _cmdtable_p_s.size && cmdstr) {
       ret = _parse_string(cmdstr, &_cmdtable_p_s, &handle);
