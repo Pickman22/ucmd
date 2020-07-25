@@ -30,6 +30,6 @@ int main(void) {
   RUN_TEST(test__parse_string);
   RUN_TEST(test__get_arg);
   RUN_TEST(test_cmd);
-  RUN_TEST(test_line_all_tests);
+  test_line_all_tests();
   return UNITY_END();
 }

@@ -80,12 +80,10 @@ static void _new_ch_callback (void* params)
   return;
 }
 
-void Line_Init (Line_CharRxCallback* fncptr) {
-  /* DBG_CATCH_NULL_PTR(fncptr); */
+void Line_Init (void) {
   Line_FlushBuff();
   _line_s.isovrflwn = false;
   /* Connect char rx interrupt to new char handle function. */
-  *fncptr = _new_ch_callback;
 }
 
 
@@ -124,4 +122,9 @@ uint8_t Line_IsCmplt (void)
 uint8_t Line_BuffIsOvrFlwn ( void )
 {
   return _line_s.isovrflwn;
+}
+
+void Line_AddChar(char ch) {
+  uint8_t tmp = ch;
+  _new_ch_callback((void*)&tmp);
 }

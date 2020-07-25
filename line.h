@@ -26,7 +26,6 @@
 /*-----------------------------------------------------------------------------
  * Type definitions. 
  *-----------------------------------------------------------------------------*/
-typedef void (*Line_CharRxCallback)(void* params);
 typedef void (*Line_Callback)(void* arg);
 
 /* 
@@ -35,7 +34,15 @@ typedef void (*Line_Callback)(void* arg);
  *  Description:  Initialize Line module.
  * =====================================================================================
  */
-void Line_Init(Line_CharRxCallback* fncptr);
+void Line_Init(void);
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Line_AddChar
+ *  Description:  Add a new character to the buffer..
+ * =====================================================================================
+ */
+void Line_AddChar(char ch);
 
 /* 
  * ===  FUNCTION  ======================================================================
