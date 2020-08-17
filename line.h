@@ -3,7 +3,6 @@
 /*-----------------------------------------------------------------------------
  *  Macro detiniftions.
  *-----------------------------------------------------------------------------*/
-#define LINE_BUFF_SIZE (16)
 #define LINE_CHAR_LF (10)
 #define LINE_CHAR_CR (13)
 #define LINE_CHAR_SPACE (32)
@@ -18,6 +17,8 @@
 #define LINE_CHAR_a (97)
 #define LINE_CHAR_z (122)
 #define LINE_MAX_STR_LEN (64)
+#define LINE_BUFF_SIZE (LINE_MAX_STR_LEN + 1)
+
 
 /*-----------------------------------------------------------------------------
  * Global variable definitions. 

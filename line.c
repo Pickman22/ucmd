@@ -74,6 +74,7 @@ static void _new_ch_callback (void* params)
     }
   } else if (Line_BuffIsOvrFlwn() && _is_eol_ch(newchar)) {
     /* Are conditions valid to recover from overflow? */
+    /* Recovers from overflow event when eond of line character is received. */
     _line_s.isovrflwn = false;
     Line_FlushBuff();
   }
