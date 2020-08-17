@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "utils.h"
 #include "ucmd.h"
+#include "line.h"
 
 #ifndef UNIT_TEST
 /*
@@ -11,10 +12,16 @@
  * to testing framework. This #define is done
  * at Makefile level so that redefinition
  * applies to the whole project.
- * */
+ */
 #define STATIC static
+/* File ucmd_lock.h provides macro definition
+ * to disable interrupts on the target.
+ */
+#include "ucmd_lock.h"
 #else
 #define STATIC
+#define uCMD_LOCK()
+#define uCMD_UNLOCK()
 #endif
 
 #define CHAR_SPACE 0x20
@@ -274,4 +281,17 @@ ErrCode_e uCmd_Run(const char* cmdstr) {
       ret = cmdstr ? E_NOT_INITIALIZED : E_NULL_PTR;
    }
    return ret;
+}
+
+ErrCode_e uCmd_Loop(void) {
+  char rawcmd[LINE_BUFF_SIZE] = {0};
+  ErrCode_e ret = E_OK;
+  uCMD_LOCK();
+  if(Line_IsCmplt()) {
+    Line_GetBuff((uint8_t*)rawcmd);
+    Line_FlushBuff();
+    ret = uCmd_Run(rawcmd);
+  }
+  uCMD_UNLOCK();
+  return ret;
 }
