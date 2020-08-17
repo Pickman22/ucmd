@@ -14,6 +14,7 @@ SRCS+=../line.c
 SRCS+=$(TEST_DIR)/test_cmd.c
 SRCS+=$(TEST_DIR)/test_utils.c
 SRCS+=$(TEST_DIR)/test_line.c
+SRCS+=$(TEST_DIR)/test_integration.c
 SRCS+=$(TEST_DIR)/main.c
 
 # Unity testing framework.

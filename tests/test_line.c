@@ -171,8 +171,8 @@ void test_Line_IsCmplt(void) {
 
 void test_Line_longest_command_wo_oveflow(void) {
   Line_Init();
-  /* Longest possible correct command. */
-  helper_line_add_string("abdlkslfkdlqksu\n", LINE_BUFF_SIZE);
+  /* Longest possible correct raw (fits in buffer) command. */
+  helper_line_add_string("pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp    \n", LINE_BUFF_SIZE);
   TEST_ASSERT_TRUE(Line_BuffIsFull());
   TEST_ASSERT_FALSE(Line_BuffIsOvrFlwn());
   TEST_ASSERT_TRUE(Line_IsCmplt());

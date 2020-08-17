@@ -16,6 +16,8 @@ extern void test_cmd(void);
 
 extern void test_line_all_tests(void);
 
+extern void test_integration_all_tests(void);
+
 void setUp(void){}
 void tearDown(void){}
 
@@ -31,5 +33,6 @@ int main(void) {
   RUN_TEST(test__get_arg);
   RUN_TEST(test_cmd);
   test_line_all_tests();
+  test_integration_all_tests();
   return UNITY_END();
 }
