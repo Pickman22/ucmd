@@ -1,6 +1,6 @@
 #include "err.h"
 
-static const char _err_str_a[][32] = {
+static const char *_err_str_a[] = {
    "OK",
    "NULL Pointer",
    "Invalid Argument",
@@ -13,7 +13,7 @@ static const char _err_str_a[][32] = {
    "Internal",
    "Generic",
    "Not Initialized",
-   {0},
+   "",
 };
 
 void print_err(char* msg, ErrCode_e err) {
