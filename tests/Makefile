@@ -30,8 +30,11 @@ OBJDUMP=objdump
 SZ=size
 
 # Any compiler options you need to set
-CFLAGS=-ggdb3
-CFLAGS+=-Og -Wall -Wextra -Warray-bounds
+CFLAGS=-ggdb3 \
+	-Og \
+	-Wall \
+	-Wextra \
+	-Warray-bounds \
 
 # Definition used for unit testing.
 # Exposes static functions to testing framework.
